@@ -1,0 +1,38 @@
+Thanks for dropping us a note. We'll get back to you within 24 hours. For urgent matters, please call our hotline: +8801790833542
+
+
+	if(!isset($_SESSION['captcha'])){
+			require('recaptcha/src/autoload.php');		
+			$recaptcha = new \ReCaptcha\ReCaptcha('6LcHxrkeAAAAAKOps0eVbXfB8F09hk0p1nIipJ_h', new \ReCaptcha\RequestMethod\SocketPost());
+			$resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+
+			if (!$resp->isSuccess()){
+		  		$_SESSION['error'] = 'Please answer recaptcha correctly';
+		  		header('location: signup.php');	
+		  		exit();	
+		  	}	
+		  	else{
+		  		$_SESSION['captcha'] = time() + (10*60);
+		  	}
+
+
+
+
+ <?php
+            if(!isset($_SESSION['captcha'])){
+              echo '
+                <di class="form-group" style="width:100%;">
+                  <div class="g-recaptcha" data-sitekey="6LcHxrkeAAAAAKOps0eVbXfB8F09hk0p1nIipJ_h"></div>
+                </di>
+              ';
+            }
+
+
+
+
+  if(isset($_SESSION['captcha'])){
+    $now = time();
+    if($now >= $_SESSION['captcha']){
+      unset($_SESSION['captcha']);
+    }
+  }
